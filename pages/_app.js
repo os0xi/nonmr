@@ -38,7 +38,7 @@ const client = createClient({
 });
 
 function MyApp({ Component, pageProps }) {
-  const [currentTheme, setCurrentTheme] = useState("light");
+  const [currentTheme, setCurrentTheme] = useState("dark");
 
   const themeOptions = {
     ...theme,
