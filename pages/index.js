@@ -43,7 +43,7 @@ export default function Home() {
           successfull, get a session from it
         </Typography>
 
-        {session && (
+        {session.data && (
           <Box sx={{ ...theme.customElements.gradientText, pt: 10 }}>
             <Typography>Welcome {session.data.user.address}</Typography>
           </Box>
