@@ -20,8 +20,10 @@ export default async function handler(req, res) {
     console.log(collectionName);
     const collectionA = await database.collection(collectionName);
     allAddressesBuys.push({ collectionName: collectionName, data: [] });
-    const cursor = await collectionA.find({});
-    await cursor.forEach((cursor) => allAddressesBuys[i].data.push(cursor));
+    const currentAddressTransactions = await collectionA.find({});
+    await currentAddressTransactions.forEach((transaction) =>
+      allAddressesBuys[i].data.push(transaction)
+    );
   }
   res.status(200).json({ buyTransactionsGroupedByAddress: allAddressesBuys });
 }

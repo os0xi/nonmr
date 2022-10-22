@@ -1,5 +1,3 @@
-import { useTheme } from "@emotion/react";
-
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useSession } from "next-auth/react";

@@ -1,14 +1,8 @@
 import { useTheme } from "@emotion/react";
-import {
-  Button,
-  createTheme,
-  Paper,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { Box } from "@mui/system";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const theme = useTheme();

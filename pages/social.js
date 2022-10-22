@@ -1,9 +1,7 @@
 import { useTheme } from "@emotion/react";
-import { Button, Card, CardContent, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { grey } from "@mui/material/colors";
 import SocialNft from "../Components/SocialNft";
 
 function Social({ mainData, setMainData }) {
