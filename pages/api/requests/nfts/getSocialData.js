@@ -1,6 +1,4 @@
-import { CollectionsOutlined, SubtitlesOffOutlined } from "@mui/icons-material";
-
-const { MongoClient, Collection } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const MONGO_STRING = process.env.MONGO_STRING;
 
 export default async function handler(req, res) {

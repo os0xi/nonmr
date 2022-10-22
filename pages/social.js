@@ -1,5 +1,3 @@
-import { useTheme } from "@emotion/react";
-import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -8,11 +6,10 @@ import SocialNft from "../Components/SocialNft";
 
 function Social({ mainData, setMainData }) {
   const [data, setData] = useState();
-  const theme = useTheme();
 
   useEffect(() => {
     async function getData() {
-      const socialData = await axios.get("/api/getSocialData");
+      const socialData = await axios.get("/api/requests/nfts/getSocialData");
       setMainData(socialData);
     }
 
@@ -39,11 +36,6 @@ function Social({ mainData, setMainData }) {
   }, [mainData, setMainData]);
   return (
     <Box>
-      {/* {!mainData && (
-        <Button variant="outlined" size="small" onClick={async () => {}}>
-          Show NFTs bought by Snoop Dogg and Gary Vee
-        </Button>
-      )} */}
       <Box
         sx={{
           display: "flex",
