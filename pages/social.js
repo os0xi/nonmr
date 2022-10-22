@@ -1,7 +1,9 @@
 import { useTheme } from "@emotion/react";
+import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Loader from "../Components/Loader";
 import SocialNft from "../Components/SocialNft";
 
 function Social({ mainData, setMainData }) {
@@ -36,7 +38,7 @@ function Social({ mainData, setMainData }) {
     }
   }, [mainData, setMainData]);
   return (
-    <div>
+    <Box>
       {/* {!mainData && (
         <Button variant="outlined" size="small" onClick={async () => {}}>
           Show NFTs bought by Snoop Dogg and Gary Vee
@@ -47,10 +49,12 @@ function Social({ mainData, setMainData }) {
           display: "flex",
           flexWrap: "wrap",
           width: "100%",
+          height: "100%",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
+        {!data && <Loader />}
         {data && (
           <Box
             key={Math.random()}
@@ -92,7 +96,7 @@ function Social({ mainData, setMainData }) {
           </Box>
         )}
       </Box>
-    </div>
+    </Box>
   );
 }
 

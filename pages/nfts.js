@@ -2,6 +2,7 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import Loader from "../Components/Loader";
 import NftCard from "../Components/NftCard";
 
 function Nfts({ profileData, setProfileData }) {
@@ -32,6 +33,7 @@ function Nfts({ profileData, setProfileData }) {
   return (
     <main>
       <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
+        {!props && <Loader />}
         {props &&
           props.nfts.data.result.map((nft) => {
             return <NftCard nft={nft} key={Math.random()} user={props.user} />;
