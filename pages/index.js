@@ -10,9 +10,9 @@ import {
 import { Box } from "@mui/system";
 import { getSession, useSession } from "next-auth/react";
 
-export default function Home({ session }) {
+export default function Home() {
   const theme = useTheme();
-  // const ss = useSession();
+  const session = useSession();
 
   return (
     <main>
@@ -45,18 +45,10 @@ export default function Home({ session }) {
 
         {session && (
           <Box sx={{ ...theme.customElements.gradientText, pt: 10 }}>
-            <Typography>Welcome {session.user.address}</Typography>
+            <Typography>Welcome {session.data.user.address}</Typography>
           </Box>
         )}
       </Box>
     </main>
   );
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: { session },
-  };
 }
