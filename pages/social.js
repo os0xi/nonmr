@@ -9,10 +9,17 @@ import SocialNft from "../Components/SocialNft";
 
 function Social({ mainData, setMainData }) {
   const [data, setData] = useState();
+  const [buysOrSales, setBuysOrSales] = useState(true);
   const theme = useTheme();
+
+  function handleChipClick() {
+    setBuysOrSales((oldState) => !oldState);
+  }
+
   useEffect(() => {
     async function getData() {
       const socialData = await axios.get("/api/requests/nfts/getSocialData");
+      console.log(socialData);
       setMainData(socialData);
     }
 
@@ -24,19 +31,21 @@ function Social({ mainData, setMainData }) {
     } else {
       console.log("Got data back from main page state , kinda' cached now");
       const allTransactions = [];
-      mainData.data.buyTransactionsGroupedByAddress.forEach(
-        (buyTransactionsArrayForOneAddress) => {
-          buyTransactionsArrayForOneAddress.data.forEach((transaction) => {
-            allTransactions.push(transaction);
-          });
-        }
-      );
+      let optionArray = mainData.data.buyTransactionsGroupedByAddress;
+      if (!buysOrSales) {
+        optionArray = mainData.data.sellTransactionsGroupedByAddress;
+      }
+      optionArray.forEach((buyTransactionsArrayForOneAddress) => {
+        buyTransactionsArrayForOneAddress.data.forEach((transaction) => {
+          allTransactions.push(transaction);
+        });
+      });
       const finalTransactions = allTransactions.sort(
         (a, b) => Number(b.block_number) - Number(a.block_number)
       );
       setData(finalTransactions);
     }
-  }, [mainData, setMainData]);
+  }, [mainData, setMainData, buysOrSales]);
   return (
     <Box>
       <Box
@@ -64,6 +73,7 @@ function Social({ mainData, setMainData }) {
               }}
             >
               <Chip
+                variant={!buysOrSales ? "outlined" : "filled"}
                 color="primary"
                 sx={{ cursor: "pointer" }}
                 label={
@@ -71,16 +81,19 @@ function Social({ mainData, setMainData }) {
                     buys
                   </Typography>
                 }
+                onClick={handleChipClick}
               />
 
               <Chip
-                variant="outlined"
-                sx={{ cursor: "not-allowed" }}
+                variant={buysOrSales ? "outlined" : "filled"}
+                color="primary"
+                sx={{ cursor: "pointer" }}
                 label={
                   <Typography variant="p" letterSpacing={1}>
                     sales
                   </Typography>
                 }
+                onClick={handleChipClick}
               />
             </Box>
             <Box
@@ -96,13 +109,22 @@ function Social({ mainData, setMainData }) {
             >
               {data.map((transaction) => {
                 let name;
-                if (transaction.buyer.slice(0, 6) === "0xce90") {
+                if (
+                  transaction.buyer.slice(0, 6) === "0xce90" ||
+                  transaction.seller.slice(0, 6) === "0xce90"
+                ) {
                   name = "Snoop Dogg";
                 }
-                if (transaction.buyer.slice(0, 6) === "0xc02f") {
+                if (
+                  transaction.buyer.slice(0, 6) === "0xc02f" ||
+                  transaction.seller.slice(0, 6) === "0xc02f"
+                ) {
                   name = "Elliotrades";
                 }
-                if (transaction.buyer.slice(0, 6) === "0x8f7c") {
+                if (
+                  transaction.buyer.slice(0, 6) === "0x8f7c" ||
+                  transaction.seller.slice(0, 6) === "0x8f7c"
+                ) {
                   name = "Gary Vee";
                 }
 
