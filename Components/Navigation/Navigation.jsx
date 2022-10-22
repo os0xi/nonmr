@@ -68,13 +68,8 @@ function Navigation({ changeTheme }) {
             NONRM Ξ
           </Typography>
         </Box>
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="flex-end"
-          gap={2}
-          mr={2}
-        >
+
+        <Box width="50%" display="flex" justifyContent="center" gap={2} mr={0}>
           <NavigationButton path="/" navigateTo={navigateTo} name="Home" />
           {isAuthenticated && (
             <NavigationButton
@@ -102,7 +97,7 @@ function Navigation({ changeTheme }) {
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
-          gap={2}
+          gap={0}
         >
           <AuthButton />
           <ThemeButton changeTheme={changeTheme} />
