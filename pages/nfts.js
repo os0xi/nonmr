@@ -1,3 +1,5 @@
+import { Refresh } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -5,39 +7,76 @@ import React, { useEffect, useState } from "react";
 import Loader from "../Components/Loader";
 import NftCard from "../Components/NftCard";
 
-function Nfts({ profileData, setProfileData }) {
+function Nfts() {
   const session = useSession();
   const [props, setProps] = useState();
+  const [refresh, setRefresh] = useState(true);
+
+  function handleRefresh() {
+    window.localStorage.setItem("nfts", null);
+    window.localStorage.setItem("user", null);
+    setProps(null);
+    setRefresh((oldRefresh) => !oldRefresh);
+  }
 
   useEffect(() => {
+    const localNftData = JSON.parse(window.localStorage.getItem("nfts"));
+    const localUserData = JSON.parse(window.localStorage.getItem("user"));
+
     async function getData() {
-      console.log(session.data.user.address);
       const userData = { user: { address: session.data.user.address } };
-      console.log(userData);
-      // console.log(session);
+      console.log("getting data");
       const data = await axios.post("/api/requests/nfts/getNfts", userData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       const nfts = data.data;
-      setProfileData({ user: session.data.user.address, nfts });
+      console.log("got data");
+
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify(session.data.user.address)
+      );
+      window.localStorage.setItem("nfts", JSON.stringify(nfts));
+      setRefresh((oldRefresh) => !oldRefresh);
     }
-    if (!profileData) {
+
+    if (!localNftData || !session.data.user.address) {
       getData();
     } else {
-      setProps({ user: profileData.user, nfts: profileData.nfts });
+      setProps({ user: localUserData, nfts: localNftData });
     }
-  }, [profileData, setProfileData, session]);
+  }, [refresh, session.data.user.address]);
 
   return (
     <main>
       <Box display="flex" flexWrap="wrap" gap={2} justifyContent="center">
         {!props && <Loader />}
-        {props &&
-          props.nfts.data.result.map((nft) => {
-            return <NftCard nft={nft} key={Math.random()} user={props.user} />;
-          })}
+        {props && props.nfts && (
+          <Box width="100%">
+            <Box>
+              <Box>
+                <IconButton onClick={handleRefresh}>
+                  <Refresh />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              gap={2}
+              flexWrap="wrap"
+            >
+              {props.nfts.data.result.map((nft) => {
+                return (
+                  <NftCard nft={nft} key={Math.random()} user={props.user} />
+                );
+              })}
+            </Box>
+          </Box>
+        )}
       </Box>
     </main>
   );

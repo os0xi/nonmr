@@ -1,5 +1,6 @@
 import { useTheme } from "@emotion/react";
-import { Chip, Paper, Typography } from "@mui/material";
+import { Refresh } from "@mui/icons-material";
+import { Chip, IconButton, Paper, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -7,23 +8,35 @@ import React, { useEffect, useState } from "react";
 import Loader from "../Components/Loader";
 import SocialNft from "../Components/SocialNft";
 
-function Social({ mainData, setMainData }) {
+function Social() {
   const [data, setData] = useState();
   const [buysOrSales, setBuysOrSales] = useState(true);
   const theme = useTheme();
+  const [refresh, setRefresh] = useState(true);
+
+
+  function handleRefresh() {
+    window.localStorage.setItem("socialData", null);
+    setData(null);
+    setRefresh((oldState) => !oldState);
+  }
 
   function handleChipClick() {
     setBuysOrSales((oldState) => !oldState);
   }
 
   useEffect(() => {
+    const localSocialData = JSON.parse(
+      window.localStorage.getItem("socialData")
+    );
+
     async function getData() {
       const socialData = await axios.get("/api/requests/nfts/getSocialData");
-      console.log(socialData);
-      setMainData(socialData);
+      window.localStorage.setItem("socialData", JSON.stringify(socialData));
+      setRefresh((oldState) => !oldState);
     }
 
-    if (!mainData) {
+    if (localSocialData === null) {
       console.log(
         "No data, fetching from db and passing to main page state :("
       );
@@ -31,9 +44,9 @@ function Social({ mainData, setMainData }) {
     } else {
       console.log("Got data back from main page state , kinda' cached now");
       const allTransactions = [];
-      let optionArray = mainData.data.buyTransactionsGroupedByAddress;
+      let optionArray = localSocialData.data.buyTransactionsGroupedByAddress;
       if (!buysOrSales) {
-        optionArray = mainData.data.sellTransactionsGroupedByAddress;
+        optionArray = localSocialData.data.sellTransactionsGroupedByAddress;
       }
       optionArray.forEach((buyTransactionsArrayForOneAddress) => {
         buyTransactionsArrayForOneAddress.data.forEach((transaction) => {
@@ -45,7 +58,7 @@ function Social({ mainData, setMainData }) {
       );
       setData(finalTransactions);
     }
-  }, [mainData, setMainData, buysOrSales]);
+  }, [buysOrSales, refresh]);
   return (
     <Box>
       <Box
@@ -65,36 +78,45 @@ function Social({ mainData, setMainData }) {
               elevation={0}
               sx={{
                 display: "flex",
+                justifyContent: "space-between",
                 ml: 9,
                 gap: 2,
-                width: "200px",
+                width: "90%",
                 py: 2,
                 backgroundColor: "background.paper",
               }}
             >
-              <Chip
-                variant={!buysOrSales ? "outlined" : "filled"}
-                color="primary"
-                sx={{ cursor: "pointer" }}
-                label={
-                  <Typography variant="p" letterSpacing={1}>
-                    buys
-                  </Typography>
-                }
-                onClick={handleChipClick}
-              />
+              <Box display="flex" gap={1}>
+                <Chip
+                  variant={!buysOrSales ? "outlined" : "filled"}
+                  color="primary"
+                  sx={{ cursor: "pointer" }}
+                  label={
+                    <Typography variant="p" letterSpacing={1}>
+                      buys
+                    </Typography>
+                  }
+                  onClick={handleChipClick}
+                />
 
-              <Chip
-                variant={buysOrSales ? "outlined" : "filled"}
-                color="primary"
-                sx={{ cursor: "pointer" }}
-                label={
-                  <Typography variant="p" letterSpacing={1}>
-                    sales
-                  </Typography>
-                }
-                onClick={handleChipClick}
-              />
+                <Chip
+                  variant={buysOrSales ? "outlined" : "filled"}
+                  color="primary"
+                  sx={{ cursor: "pointer" }}
+                  label={
+                    <Typography variant="p" letterSpacing={1}>
+                      sales
+                    </Typography>
+                  }
+                  onClick={handleChipClick}
+                />
+              </Box>
+
+              <Box>
+                <IconButton onClick={handleRefresh}>
+                  <Refresh />
+                </IconButton>
+              </Box>
             </Box>
             <Box
               key={Math.random()}
