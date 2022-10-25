@@ -5,12 +5,15 @@ import { useTheme } from "@emotion/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Refresh } from "@mui/icons-material";
+import { useNetwork } from "wagmi";
 
 function Profile({ profileData, setProfileData }) {
   const theme = useTheme();
   const session = useSession();
   const [refresh, setRefresh] = useState(true);
   const [data, setData] = useState({ balance: null });
+  const { chain } = useNetwork();
+  console.log(chain);
 
   function handleRefresh() {
     window.localStorage.setItem("ethBalance", null);
@@ -22,8 +25,14 @@ function Profile({ profileData, setProfileData }) {
     console.log("effect triggered");
     async function getEthBalance(address) {
       console.log("getting balance from api");
-      const ethBalanceResult = await axios.get(
-        "/api/getNativeBalanceForAddress"
+      const ethBalanceResult = await axios.post(
+        "/api/getNativeBalanceForAddress",
+        { chain: chain.id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       window.localStorage.setItem(
         "ethBalance",
@@ -46,7 +55,7 @@ function Profile({ profileData, setProfileData }) {
         };
       });
     }
-  }, [refresh]);
+  }, [refresh, chain]);
 
   return (
     <Box display="flex" flexDirection="column">

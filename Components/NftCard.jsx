@@ -14,8 +14,10 @@ function NftCard({ nft, user }) {
   let image;
   if (nftMetadata) {
     image = nftMetadata.image;
-    if (image.slice(0, 5) === "ipfs:") {
-      image = image.replace("ipfs://", "https://ipfs.io/ipfs/");
+    if (image) {
+      if (image.slice(0, 5) === "ipfs:") {
+        image = image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      }
     }
   }
   const theme = useTheme();

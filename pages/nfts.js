@@ -4,6 +4,7 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
 import Loader from "../Components/Loader";
 import NftCard from "../Components/NftCard";
 
@@ -18,13 +19,17 @@ function Nfts() {
     setProps(null);
     setRefresh((oldRefresh) => !oldRefresh);
   }
-
+  const { chain } = useNetwork();
+  console.log(chain);
   useEffect(() => {
     const localNftData = JSON.parse(window.localStorage.getItem("nfts"));
     const localUserData = JSON.parse(window.localStorage.getItem("user"));
 
     async function getData() {
-      const userData = { user: { address: session.data.user.address } };
+      const userData = {
+        user: { address: session.data.user.address },
+        chain: chain.id,
+      };
       console.log("getting data");
       const data = await axios.post("/api/requests/nfts/getNfts", userData, {
         headers: {
@@ -32,7 +37,7 @@ function Nfts() {
         },
       });
       const nfts = data.data;
-      console.log("got data");
+      console.log("got data", nfts);
 
       window.localStorage.setItem(
         "user",

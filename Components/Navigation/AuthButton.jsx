@@ -30,7 +30,7 @@ function AuthButton() {
   useEffect(() => {
     async function disconnectAll() {
       await disconnectAsync(); //metamask wallet
-      signOut(); //from next
+      signOut({ redirect: "/" }); //from next
       setSnackBarOpen(true);
       setErrorMessage("Address changed");
     }
@@ -55,7 +55,7 @@ function AuthButton() {
         window.localStorage.setItem("nfts", null);
         window.localStorage.setItem("ethBalance", null);
         await disconnectAsync(); //metamask wallet
-        signOut(); //from next
+        signOut({ redirect: "/" });
         setSnackBarOpen(true);
         setErrorMessage("Success");
         return;
@@ -90,7 +90,7 @@ function AuthButton() {
       await disconnectAsync();
       setSnackBarOpen(true);
       if (session.status === "authenticated") {
-        signOut(); //from next
+        signOut({ redirect: "/" }); //from next
       }
     }
   };

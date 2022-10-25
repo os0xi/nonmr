@@ -3,11 +3,13 @@ import { Typography } from "@mui/material";
 
 import { Box } from "@mui/system";
 import { useSession } from "next-auth/react";
+import { useNetwork } from "wagmi";
 
 export default function Home() {
+  const { chain } = useNetwork();
   const theme = useTheme();
   const session = useSession();
-
+  console.log(chain);
   return (
     <main>
       <Box
@@ -39,7 +41,9 @@ export default function Home() {
 
         {session.data && (
           <Box sx={{ ...theme.customElements.gradientText, pt: 10 }}>
-            <Typography>Welcome {session.data.user.address}</Typography>
+            <Typography>
+              Welcome to {chain.name}, {session.data.user.address}
+            </Typography>
           </Box>
         )}
       </Box>
