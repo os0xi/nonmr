@@ -5,14 +5,17 @@ import { useRouter } from "next/router";
 
 function WithAuth({ session, children }) {
   const { data, status } = useSession();
-  const router = useRouter();
+  const { push } = useRouter();
   useEffect(() => {
     if (status !== "authenticated") {
-      router.push("/");
+      push("/");
     }
-  }, [data, status, router]);
+  }, [data, status, push]);
 
-  if (status === "authenticated") return <>{children}</>;
+  if (status === "authenticated") {
+    return <>{children}</>;
+  } else {
+  }
 }
 
 export default WithAuth;
@@ -20,14 +23,14 @@ export default WithAuth;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
-  //   if (!session) {
-  //     return {
-  //       redirect: {
-  //         destination: "/",
-  //         permanent: false,
-  //       },
-  //     };
-  //   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
+  }
   return {
     props: { session: session },
   };

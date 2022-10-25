@@ -11,7 +11,6 @@ import React from "react";
 
 function NftCard({ nft, user }) {
   const nftMetadata = JSON.parse(nft.metadata);
-  console.log(nft.price);
   let image;
   if (nftMetadata) {
     image = nftMetadata.image;

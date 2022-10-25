@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { grey, green, deepPurple } from "@mui/material/colors";
 import React from "react";
 
 function SocialNft({ transaction, name, differenceInDays }) {
@@ -16,9 +16,10 @@ function SocialNft({ transaction, name, differenceInDays }) {
         mt: 2,
         p: 2,
         display: "flex",
+        backgroundColor: theme.palette.mode === "light" ? grey[50] : grey[900],
         "&:hover": {
           backgroundColor:
-            theme.palette.mode === "light" ? grey[100] : grey[900],
+            theme.palette.mode === "light" ? grey[200] : grey[800],
           cursor: "pointer",
         },
       }}

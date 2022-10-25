@@ -90,6 +90,13 @@ function Navigation({ changeTheme }) {
             navigateTo={navigateTo}
             name="Social"
           />
+          {isAuthenticated && (
+            <NavigationButton
+              path="/mint"
+              navigateTo={navigateTo}
+              name="Mint NFT"
+            />
+          )}
         </Box>
 
         <Box

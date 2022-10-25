@@ -105,22 +105,10 @@ function MyApp({ Component, pageProps }) {
               >
                 {Component.requiresAuth ? (
                   <WithAuth>
-                    <Component
-                      {...pageProps}
-                      profileData={profileData}
-                      setProfileData={(x) => {
-                        setProfileData(x);
-                      }}
-                    />
+                    <Component {...pageProps} />
                   </WithAuth>
                 ) : (
-                  <Component
-                    {...pageProps}
-                    setMainData={(x) => {
-                      setMainData(x);
-                    }}
-                    mainData={mainData}
-                  />
+                  <Component {...pageProps} />
                 )}
               </Container>
             </Paper>

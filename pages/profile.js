@@ -36,7 +36,6 @@ function Profile({ profileData, setProfileData }) {
     }
 
     if (!JSON.parse(window.localStorage.getItem("ethBalance"))) {
-      console.log("calling api?");
       getEthBalance();
     } else {
       console.log("Setting balance");
