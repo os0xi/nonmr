@@ -75,11 +75,11 @@ function SaveToIpfs() {
     console.log(gasAprox);
     const transactionParameters = {
       gas: ethers.utils.hexlify(gasAprox),
-      gasPrice: await web3.eth.getGasPrice(function (e, r) {
-        return r;
-      }),
+      // gasPrice: await web3.eth.getGasPrice(function (e, r) {
+      //   return r;
+      // }),
       to: "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b", // Required except during contract publications.
-      from: window.ethereum.selectedAddress, // must match user's active address.
+      from: window.ethereum.selectedAddress, // must match user's active address, and contract owner
       data: window.contract.methods
         .mintNFT(window.ethereum.selectedAddress, nftMetadata)
         .encodeABI(), //make call to NFT smart contract
@@ -140,7 +140,7 @@ function SaveToIpfs() {
     }
 
     fileName && base64IMG && !ipfsPath ? writeImageToIpfs() : null;
-  }, [base64IMG, fileName]);
+  }, [base64IMG, fileName, ipfsPath]);
 
   return (
     <Box
