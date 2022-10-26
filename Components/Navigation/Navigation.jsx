@@ -92,9 +92,9 @@ function Navigation({ changeTheme }) {
           />
           {isAuthenticated && (
             <NavigationButton
-              path="/mint"
+              path="/ipfs"
               navigateTo={navigateTo}
-              name="Mint NFT"
+              name="Save to IPFS"
             />
           )}
         </Box>

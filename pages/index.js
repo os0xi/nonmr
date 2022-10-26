@@ -39,7 +39,7 @@ export default function Home() {
           successfull, get a session from it
         </Typography>
 
-        {session.data && (
+        {session.data && chain && (
           <Box sx={{ ...theme.customElements.gradientText, pt: 10 }}>
             <Typography>
               Welcome to {chain.name}, {session.data.user.address}

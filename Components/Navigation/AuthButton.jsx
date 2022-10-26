@@ -6,12 +6,17 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useAccount, useConnect, useSignMessage, useDisconnect } from "wagmi";
+import {
+  useAccount,
+  useConnect,
+  useSignMessage,
+  useDisconnect,
+  useNetwork,
+} from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import DialogChangeAddress from "./DialogChangeAddress";
 
 function AuthButton() {
   const { connectAsync } = useConnect();
@@ -19,26 +24,28 @@ function AuthButton() {
   const { isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const { address } = useAccount();
-
+  const { chain } = useNetwork();
   const session = useSession();
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [changedAddressDialogOpen, setChangedAddressDialogOpen] =
-    useState(false);
 
   useEffect(() => {
     async function disconnectAll() {
-      await disconnectAsync(); //metamask wallet
-      signOut({ redirect: "/" }); //from next
+      address && (await disconnectAsync()); //metamask wallet
+      session.data && signOut({ redirect: "/" }); //from next
       setSnackBarOpen(true);
       setErrorMessage("Address changed");
     }
 
-    if (address && session.data && address !== session.data.user.address) {
+    if (
+      (address && session.data && address !== session.data.user.address) ||
+      !chain
+    ) {
+      console.log("disconnecting all");
       disconnectAll();
     }
-  }, [address, disconnectAsync, session.data]);
+  }, [address, disconnectAsync, session.data, chain]);
 
   function handleSnackBarClose() {
     setSnackBarOpen(false);

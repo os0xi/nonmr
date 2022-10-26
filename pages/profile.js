@@ -23,8 +23,10 @@ function Profile({ profileData, setProfileData }) {
 
   useEffect(() => {
     console.log("effect triggered");
+
     async function getEthBalance(address) {
       console.log("getting balance from api");
+
       const ethBalanceResult = await axios.post(
         "/api/getNativeBalanceForAddress",
         { chain: chain.id },
@@ -34,17 +36,21 @@ function Profile({ profileData, setProfileData }) {
           },
         }
       );
+
       window.localStorage.setItem(
         "ethBalance",
         ethBalanceResult.data.ethBalance
       );
-      setRefresh((oldState) => !oldState);
 
-      // const socialData = await axios.get("/api/requests/nfts/getSocialData");
-      // ethBalance = ethBalanceResult;
+      setData((oldData) => {
+        return {
+          ...oldData,
+          balance: window.localStorage.getItem("ethBalance"),
+        };
+      });
     }
 
-    if (!JSON.parse(window.localStorage.getItem("ethBalance"))) {
+    if (JSON.parse(window.localStorage.getItem("ethBalance")) === null) {
       getEthBalance();
     } else {
       console.log("Setting balance");
