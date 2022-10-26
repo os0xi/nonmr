@@ -84,6 +84,12 @@ function Social() {
               backgroundColor: "background.paper",
             }}
           >
+            <Box>
+              <IconButton onClick={handleRefresh}>
+                <Refresh />
+              </IconButton>
+            </Box>
+
             <Box display="flex" gap={1}>
               <Chip
                 variant={!buysOrSales ? "outlined" : "filled"}
@@ -108,12 +114,6 @@ function Social() {
                 }
                 onClick={handleChipClick}
               />
-            </Box>
-
-            <Box>
-              <IconButton onClick={handleRefresh}>
-                <Refresh />
-              </IconButton>
             </Box>
           </Box>
           <Box
