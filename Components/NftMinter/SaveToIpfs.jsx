@@ -16,9 +16,9 @@ function SaveToIpfs() {
   const [contract, setContract] = useState();
   const [mintTransaction, setMintTransaction] = useState();
 
-  const contractABI = require("../Contracts/Nft8001.json").abi;
-  const contractAddress = "0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0";
-
+  const contractABI = require("../Contracts/Nft800.json").abi;
+  const contractAddress = "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b";
+  //  0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0
   function handleNameChange(e) {
     setNftName(e.target.value);
   }
@@ -62,7 +62,6 @@ function SaveToIpfs() {
     const ALCHEMY_KEY = await axios.get("/api/mintNft/getAlchemyUrl");
     const web3 = createAlchemyWeb3(ALCHEMY_KEY.data.ALCHEMY_KEY);
 
-    console.log("web3", { web3: web3 });
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     window.contract = contract;
     console.log(contract);
