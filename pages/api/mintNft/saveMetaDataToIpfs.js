@@ -60,7 +60,7 @@ export default async function handler(req, res) {
   const metaData = req.body.content;
   console.log(metaData);
   const pinataUrl = await pinJSONToIPFS(metaData);
-  console.log(pinataUrl.pinataUrl);
+  console.log("pinataUrl", pinataUrl);
   //   const ipfsResponse = await saveMetaDataToIpfs(path, metaData);
   //   console.log(ipfsResponse);
   res.status(200).json({ path: pinataUrl.pinataUrl });

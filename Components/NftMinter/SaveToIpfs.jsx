@@ -77,9 +77,9 @@ function SaveToIpfs() {
     console.log(gasAprox);
     const transactionParameters = {
       gas: ethers.utils.hexlify(gasAprox),
-      gasPrice: await web3.eth.getGasPrice(function (e, r) {
-        return r;
-      }),
+      // gasPrice: await web3.eth.getGasPrice(function (e, r) {
+      //   return r;
+      // }),
       to: contractAddress, // Required except during contract publications.
       from: window.ethereum.selectedAddress, // must match user's active address
       data: window.contract.methods
