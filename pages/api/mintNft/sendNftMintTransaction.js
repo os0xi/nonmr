@@ -6,8 +6,8 @@ const _ = require("lodash");
 
 export default async function handler(req, res) {
   const chain = req.body.chain;
-  const contractABI = require("../../../Components/Contracts/Nft800.json").abi;
-  const contractAddress = "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b";
+  const contractABI = require("../../../Components/Contracts/Nft8001.json").abi;
+  const contractAddress = "0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0";
 
   const recipient = req.body.address;
   const tokenURI = req.body.tokenURI;
