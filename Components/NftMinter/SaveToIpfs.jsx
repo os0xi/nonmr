@@ -58,12 +58,6 @@ function SaveToIpfs() {
     );
   }
 
-  async function getContract() {
-    const contract2 = await axios.get("/api/mintNft/getContract");
-    console.log(contract2.data.contract);
-    setContract(contract2.data.contract);
-  }
-
   async function mintNft() {
     const ALCHEMY_KEY = await axios.get("/api/mintNft/getAlchemyUrl");
     const web3 = createAlchemyWeb3(ALCHEMY_KEY.data.ALCHEMY_KEY);
@@ -88,10 +82,10 @@ function SaveToIpfs() {
     });
     console.log("gas2", gas2);
     const transactionParameters = {
-      gas: ethers.utils.hexlify(gas2),
-      gasPrice: await web3.eth.getGasPrice(function (e, r) {
-        return r;
-      }),
+      gas: ethers.utils.hexlify(gasAprox),
+      // gasPrice: await web3.eth.getGasPrice(function (e, r) {
+      //   return r;
+      // }),
       to: contractAddress, // Required except during contract publications.
       from: window.ethereum.selectedAddress, // must match user's active address
       data: window.contract.methods
