@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
@@ -7,10 +6,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
 
 function NftCard({ nft, user }) {
   const nftMetadata = JSON.parse(nft.metadata);
+  console.log(nftMetadata);
   let image;
   if (nftMetadata) {
     image = nftMetadata.image;
@@ -20,18 +19,32 @@ function NftCard({ nft, user }) {
       }
     }
   }
-  const theme = useTheme();
   return (
     <>
       {nftMetadata && (
         <Card>
           <CardHeader
             title={<Typography>{nft.name}</Typography>}
+            subheader={<Typography>{nftMetadata.name}</Typography>}
             action={<Typography>{nft.price}</Typography>}
           />
-          <CardContent>
-            <img src={image} alt="" style={{ width: 200, height: "auto" }} />
+          <CardContent sx={{ height: "80%" }}>
+            <Box
+              height="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <img
+                src={image}
+                alt=""
+                style={{ maxWidth: 200, height: "auto" }}
+              />
+              <Typography>{nftMetadata.description}</Typography>
+            </Box>
           </CardContent>
+          <CardContent></CardContent>
         </Card>
       )}
     </>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
+import Image from "next/image";
 function SaveToIpfs() {
   const [base64IMG, setBase64IMG] = useState();
   const [fileName, setFileName] = useState();
@@ -14,8 +15,8 @@ function SaveToIpfs() {
   const [contract, setContract] = useState();
   const [mintTransaction, setMintTransaction] = useState();
 
-  const contractABI = require("../Contracts/Nft800.json").abi;
-  const contractAddress = "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b";
+  const contractABI = require("../Contracts/Nft8001.json").abi;
+  const contractAddress = "0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0";
 
   function handleNameChange(e) {
     setNftName(e.target.value);
@@ -63,23 +64,24 @@ function SaveToIpfs() {
   }
 
   async function mintNft() {
-    const web3 = createAlchemyWeb3(
-      "https://eth-goerli.g.alchemy.com/v2/KAATDpIJZOPFnKNkzZ3Ra4syREcf6xsd"
-    );
-    console.log(web3);
+    const ALCHEMY_KEY = await axios.get("/api/mintNft/getAlchemyUrl");
+    const web3 = createAlchemyWeb3(ALCHEMY_KEY.data.ALCHEMY_KEY);
+
+    console.log("web3", { web3: web3 });
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     window.contract = contract;
+    console.log(contract);
     const gasAprox = await window.contract.methods
       .mintNFT(window.ethereum.selectedAddress, nftMetadata)
       .estimateGas({ from: window.ethereum.selectedAddress });
     console.log(gasAprox);
     const transactionParameters = {
       gas: ethers.utils.hexlify(gasAprox),
-      // gasPrice: await web3.eth.getGasPrice(function (e, r) {
-      //   return r;
-      // }),
-      to: "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b", // Required except during contract publications.
-      from: window.ethereum.selectedAddress, // must match user's active address, and contract owner
+      gasPrice: await web3.eth.getGasPrice(function (e, r) {
+        return r;
+      }),
+      to: contractAddress, // Required except during contract publications.
+      from: window.ethereum.selectedAddress, // must match user's active address
       data: window.contract.methods
         .mintNFT(window.ethereum.selectedAddress, nftMetadata)
         .encodeABI(), //make call to NFT smart contract

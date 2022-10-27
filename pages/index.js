@@ -6,6 +6,9 @@ import { useSession } from "next-auth/react";
 import { useNetwork } from "wagmi";
 
 export default function Home() {
+  // display
+  //  block
+  // taguri semantice
   const { chain } = useNetwork();
   const theme = useTheme();
   const session = useSession();

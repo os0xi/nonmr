@@ -52,7 +52,7 @@ function Nfts() {
     } else {
       setProps({ user: localUserData, nfts: localNftData });
     }
-  }, [refresh, session.data.user.address]);
+  }, [refresh, session.data.user.address, chain.id]);
 
   return (
     <main>
