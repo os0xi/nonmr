@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Image from "next/image";
+import { parseEther } from "ethers/lib/utils";
 function SaveToIpfs() {
   const [base64IMG, setBase64IMG] = useState();
   const [fileName, setFileName] = useState();
@@ -75,11 +76,22 @@ function SaveToIpfs() {
       .mintNFT(window.ethereum.selectedAddress, nftMetadata)
       .estimateGas({ from: window.ethereum.selectedAddress });
     console.log(gasAprox);
+    const gas2 = await web3.eth.estimateGas({
+      // Wrapped ETH address
+      to: contractAddress,
+      // `function deposit() payable`
+      data: window.contract.methods
+        .mintNFT(window.ethereum.selectedAddress, nftMetadata)
+        .encodeABI(),
+      // 1 ether
+      value: parseEther("0"),
+    });
+    console.log("gas2", gas2);
     const transactionParameters = {
-      gas: ethers.utils.hexlify(gasAprox),
-      // gasPrice: await web3.eth.getGasPrice(function (e, r) {
-      //   return r;
-      // }),
+      gas: ethers.utils.hexlify(gas2),
+      gasPrice: await web3.eth.getGasPrice(function (e, r) {
+        return r;
+      }),
       to: contractAddress, // Required except during contract publications.
       from: window.ethereum.selectedAddress, // must match user's active address
       data: window.contract.methods
