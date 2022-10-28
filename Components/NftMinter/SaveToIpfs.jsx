@@ -16,9 +16,9 @@ function SaveToIpfs() {
   const [contract, setContract] = useState();
   const [mintTransaction, setMintTransaction] = useState();
 
-  const contractABI = require("../Contracts/Nft800.json").abi;
-  const contractAddress = "0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b";
-  //  0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0
+  const contractABI = require("../Contracts/Nft8001.json").abi;
+  const contractAddress = "0xC6DAe01Daba875a7E79419D5B06ED6473FaEa5E0";
+  //   0x9b63ecaba8fc130ec5d2b2b14c8949b4c61b294b
   function handleNameChange(e) {
     setNftName(e.target.value);
   }
@@ -64,6 +64,7 @@ function SaveToIpfs() {
 
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     window.contract = contract;
+
     console.log(contract);
     const gasAprox = await window.contract.methods
       .mintNFT(window.ethereum.selectedAddress, nftMetadata)
@@ -79,7 +80,6 @@ function SaveToIpfs() {
       // 1 ether
       value: parseEther("0"),
     });
-    console.log("gas2", gas2);
     const transactionParameters = {
       gas: ethers.utils.hexlify(gasAprox),
       // gasPrice: await web3.eth.getGasPrice(function (e, r) {
